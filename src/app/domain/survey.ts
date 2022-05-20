@@ -1,4 +1,4 @@
-import {Chapter} from "../../catalogue-ui/domain/dynamic-form-model";
+import {Section} from "../../catalogue-ui/domain/dynamic-form-model";
 
 export class Survey {
   id: string;
@@ -10,7 +10,7 @@ export class Survey {
   createdBy: string;
   modificationDate: string;
   modifiedBy: string;
-  chapters: Chapter[];
+  chapters: Section[];
 }
 
 

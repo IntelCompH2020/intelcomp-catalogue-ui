@@ -7,7 +7,6 @@ export const environment = {
   API_TOKEN_ENDPOINT: '',
   projectName: 'Intelcomp',
   projectMail: 'example@oac.eu',
-  serviceORresource: 'Resource',
   hasUserConsent: true,
   showHelpContent: false,
   privacyPolicyURL: '',
