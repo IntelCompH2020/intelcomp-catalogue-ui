@@ -27,7 +27,6 @@ export class FormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.datasetTypeId = this.activatedRoute.snapshot.params['datasetTypeId'];
-    console.log(this.datasetTypeId);
     this.subscriptions.push(
       // this.catalogueService.getDatasetAnswer(this.datasetTypeId).subscribe(
       //   res => {
@@ -41,7 +40,7 @@ export class FormComponent implements OnInit, OnDestroy {
       //   }
       // )
       this.formService.getFormModel(this.datasetTypeId).subscribe(
-        res => { console.log(res)},
+        res => { },
         error => {console.log(error)}
       )
     );
