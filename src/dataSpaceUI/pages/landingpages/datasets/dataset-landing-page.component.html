@@ -16,9 +16,9 @@
             <span class="field-label">Publisher: {{dataset['metadata']['publisher']}}</span>
           </div>
 
-          <div *ngIf="dataset['metadata']['languages'][0] !== ''" class="uk-margin-top uk-scrollspy-inview uk-animation-fade uk-label" uk-scrollspy-class="" style="">
+          <div *ngIf="dataset['metadata']['languages'][0] !== ''" class="uk-margin-top uk-scrollspy-inview uk-animation-fade" uk-scrollspy-class="" style="">
             <!--<span class="field-label">Language: </span>-->
-            <span *ngFor="let language of dataset['metadata']['languages']" class="field-value">{{language}}</span>
+            <span *ngFor="let language of dataset['metadata']['languages']" class="field-value uk-label uk-margin-small-right">{{language}}</span>
           </div>
         </div>
 
@@ -46,7 +46,9 @@
           <!-- subject -->
           <div *ngIf="dataset['metadata']['subjects'][0] !== ''" class="uk-margin-top uk-scrollspy-inview uk-animation-fade service-users" uk-scrollspy-class="" style="">
             <span class="field-label">Subjects: </span>
-            <span *ngFor="let item of dataset['metadata']['subjects']" class="field-value uk-margin-small-left">{{item}}</span>
+            <ng-container *ngFor="let item of dataset['metadata']['subjects']; let i=index" class="field-value uk-margin-small-left">
+              <span>{{(i === 0 ? '' : ', ') + item}}</span>
+            </ng-container>
           </div>
           <!-- type -->
           <div *ngIf="dataset['metadata']['type']" class="uk-margin-top uk-scrollspy-inview uk-animation-fade service-users" uk-scrollspy-class="" style="">
@@ -79,12 +81,12 @@
           <div *ngIf="instances !== null" class="uk-card uk-card-default uk-card-body">
             <h6 class="field-label">Instances / Versions</h6>
             <div class="uk-flex">
-             <ul>
-               <li *ngFor="let instance of instances">
-                 <span>{{instance['metadata']['version']}}</span><br>
-                 <span>({{instance['metadata']['dates'][0]['value']}})</span>
-               </li>
-             </ul>
+              <ul>
+                <li *ngFor="let instance of instances">
+                  <span>{{instance['metadata']['version']}}</span><br>
+                  <span>({{instance['metadata']['dates'][0]['value']}})</span>
+                </li>
+              </ul>
             </div>
             <a uk-toggle="target: #modal-dataset-instances">More details...</a>
           </div>
@@ -97,7 +99,7 @@
               </div>
               <div class="uk-margin-left">
                 <div> {{dataset['metadata']['contact']['name']}} </div>
-<!--                <a href="mailto:{{dataset['metadata']['contact']['email']}}" >{{dataset['metadata']['contact']['email']}}</a>-->
+                <!--                <a href="mailto:{{dataset['metadata']['contact']['email']}}" >{{dataset['metadata']['contact']['email']}}</a>-->
                 <span>{{dataset['metadata']['contact']['email'].replace('@', ' [at] ')}}</span>
               </div>
             </div>
@@ -136,7 +138,7 @@
           <td *ngIf="instance['metadata']['identifier']">{{instance['metadata']['identifier']['value']}}</td>
           <td><span *ngFor="let creator of instance['metadata']['creators']">
             <span>{{creator['creatorName']}}</span><br>
-            <span *ngIf="instance['metadata']['identifier']">{{creator['nameIdentifier']['value']}}</span><br>
+            <span *ngIf="creator['nameIdentifier']">{{creator['nameIdentifier']['value']}}</span><br>
           </span></td>
           <td>{{instance['metadata']['dates'][0]['value']}}</td>
           <td><span *ngFor="let size of instance['metadata']['sizes']; let i=index">
