@@ -78,7 +78,7 @@
         </div>
 
         <div class="uk-width-1-3">
-          <div *ngIf="instances !== null" class="uk-card uk-card-default uk-card-body">
+          <div *ngIf="instances.length > 0" class="uk-card uk-card-default uk-card-body">
             <h6 class="field-label">Instances / Versions</h6>
             <div class="uk-flex">
               <ul>
@@ -99,7 +99,6 @@
               </div>
               <div class="uk-margin-left">
                 <div> {{dataset['metadata']['contact']['name']}} </div>
-                <!--                <a href="mailto:{{dataset['metadata']['contact']['email']}}" >{{dataset['metadata']['contact']['email']}}</a>-->
                 <span>{{dataset['metadata']['contact']['email'].replace('@', ' [at] ')}}</span>
               </div>
             </div>
@@ -135,7 +134,7 @@
         <tbody>
         <tr *ngFor="let instance of instances">
           <td>{{instance['metadata']['version']}}</td>
-          <td *ngIf="instance['metadata']['identifier']">{{instance['metadata']['identifier']['value']}}</td>
+          <td><span *ngIf="instance['metadata']['identifier']">{{instance['metadata']['identifier']['value']}}</span></td>
           <td><span *ngFor="let creator of instance['metadata']['creators']">
             <span>{{creator['creatorName']}}</span><br>
             <span *ngIf="creator['nameIdentifier']">{{creator['nameIdentifier']['value']}}</span><br>
