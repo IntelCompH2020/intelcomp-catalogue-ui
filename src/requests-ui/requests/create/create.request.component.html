@@ -1,0 +1,57 @@
+<div class="uk-container uk-padding">
+  <h5 class="uk-text-center uk-padding-small">Create request</h5>
+  <form class="uk-form-horizontal" [formGroup]="createRequestForm">
+    <div class="uk-margin">
+      <label class="uk-form-label" for="name">Subject</label>
+      <div class="uk-form-controls">
+        <input formControlName="name" class="uk-input" id="name" type="text">
+      </div>
+    </div>
+
+    <div class="uk-margin">
+      <label class="uk-form-label" for="assignee">Assign to</label>
+      <div class="uk-form-controls">
+        <input formControlName="assignee" class="uk-input" id="assignee" type="email">
+      </div>
+    </div>
+
+    <div class="uk-margin">
+      <label class="uk-form-label" for="description">Description</label>
+      <div class="uk-form-controls">
+        <ckeditor [editor]="editor" formControlName="description" id="description"
+                  [ngClass]="{'uk-form-danger': false}">
+        </ckeditor>
+      </div>
+    </div>
+
+    <div class="uk-margin">
+      <label class="uk-form-label" for="status">Status</label>
+      <div class="uk-form-controls">
+        <select formControlName="status" class="uk-select" id="status">
+          <option>Open</option>
+          <option>Closed</option>
+          <option>Inactive</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="uk-margin">
+      <label class="uk-form-label" for="priority">Priority</label>
+      <div class="uk-form-controls">
+        <select formControlName="priority" class="uk-select" id="priority">
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+          <option>Critical</option>
+        </select>
+      </div>
+    </div>
+
+
+  </form>
+  <div class="uk-flex uk-flex-right">
+    <button (click)="createRequest()" class="uk-button uk-button-primary">Create request</button>
+  </div>
+</div>
+
+<!--<pre>{{createRequestForm.getRawValue() | json}}</pre>-->

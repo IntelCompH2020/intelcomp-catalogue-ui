@@ -1,0 +1,25 @@
+<div class="uk-container uk-padding">
+  <h5 class="uk-text-center">Requests</h5>
+  <table *ngIf="requests" class="uk-table uk-table-striped">
+    <thead>
+    <tr>
+      <th>Status</th>
+      <th>Priority</th>
+      <th>Subject</th>
+      <th>Assignee</th>
+      <th>Updated</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let request of requests">
+      <td>{{request.status}}</td>
+      <td>{{request.priority}}</td>
+      <td><a [routerLink]="['/requests', request.id]">{{request.name}}</a></td>
+      <td>{{request.assignee}}</td>
+      <td>{{request.updated | date}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!--<pre>{{requests | json}}</pre>-->
