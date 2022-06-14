@@ -4,14 +4,16 @@
     <div class="uk-margin">
       <label class="uk-form-label" for="name">Subject</label>
       <div class="uk-form-controls">
-        <input formControlName="name" class="uk-input" id="name" type="text">
+        <input formControlName="name" class="uk-input" id="name" type="text"
+               [ngClass]="{'uk-form-danger': checkFormValidity('name')}">
       </div>
     </div>
 
     <div class="uk-margin">
       <label class="uk-form-label" for="assignee">Assign to</label>
       <div class="uk-form-controls">
-        <input formControlName="assignee" class="uk-input" id="assignee" type="email">
+        <input formControlName="assignee" class="uk-input" id="assignee" type="email"
+               [ngClass]="{'uk-form-danger': checkFormValidity('assignee')}">
       </div>
     </div>
 
@@ -19,7 +21,7 @@
       <label class="uk-form-label" for="description">Description</label>
       <div class="uk-form-controls">
         <ckeditor [editor]="editor" formControlName="description" id="description"
-                  [ngClass]="{'uk-form-danger': false}">
+                  [ngClass]="{'uk-form-danger': checkFormValidity('description')}">
         </ckeditor>
       </div>
     </div>
@@ -27,7 +29,8 @@
     <div class="uk-margin">
       <label class="uk-form-label" for="status">Status</label>
       <div class="uk-form-controls">
-        <select formControlName="status" class="uk-select" id="status">
+        <select formControlName="status" class="uk-select" id="status"
+                [ngClass]="{'uk-form-danger': checkFormValidity('status')}">
           <option>Open</option>
           <option>Closed</option>
           <option>Inactive</option>
@@ -38,7 +41,8 @@
     <div class="uk-margin">
       <label class="uk-form-label" for="priority">Priority</label>
       <div class="uk-form-controls">
-        <select formControlName="priority" class="uk-select" id="priority">
+        <select formControlName="priority" class="uk-select" id="priority"
+                [ngClass]="{'uk-form-danger': checkFormValidity('priority')}">
           <option>Low</option>
           <option>Medium</option>
           <option>High</option>
@@ -54,4 +58,4 @@
   </div>
 </div>
 
-<!--<pre>{{createRequestForm.getRawValue() | json}}</pre>-->
+<pre>{{createRequestForm.getRawValue() | json}}</pre>

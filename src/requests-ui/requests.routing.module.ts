@@ -17,6 +17,10 @@ const routes: Routes = [
     path: ':id',
     component: RequestComponent
   },
+  {
+    path: ':id/edit',
+    component: CreateRequestComponent
+  },
 ]
 
 @NgModule({

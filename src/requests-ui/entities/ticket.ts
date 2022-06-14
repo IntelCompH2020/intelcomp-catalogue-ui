@@ -21,7 +21,7 @@ export class Ticket {
     this.status = null;
     this.priority = null;
     this.comments = null;
-    // this.comments = [new TicketComment()];
+    this.comments = [];
   };
 
   // constructor(id: string, name: string, assigner: string, assignee: string, created: Date, updated: Date, description: string, status: string, priority: string, comments: TicketComment[]) {

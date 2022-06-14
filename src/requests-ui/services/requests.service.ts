@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {Ticket} from "../entities/ticket";
+import {Ticket, TicketComment} from "../entities/ticket";
 
 @Injectable()
 export class RequestsService {
@@ -19,5 +19,9 @@ export class RequestsService {
 
   createRequest(ticket: Ticket) {
     return this.http.post<Ticket>(this.base + '/tickets', ticket);
+  }
+
+  postComment(ticketId: string, comment: TicketComment) {
+    return this.http.post<Ticket>(this.base + `/tickets/${ticketId}/comments`, comment);
   }
 }
