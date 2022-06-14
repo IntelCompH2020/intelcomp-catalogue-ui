@@ -53,9 +53,14 @@
 
 
   </form>
-  <div class="uk-flex uk-flex-right">
+  <div *ngIf="!edit else editButton" class="uk-flex uk-flex-right">
     <button (click)="createRequest()" class="uk-button uk-button-primary">Create request</button>
   </div>
+  <ng-template #editButton>
+    <div class="uk-flex uk-flex-right">
+      <button (click)="editRequest()" class="uk-button uk-button-primary">Edit request</button>
+    </div>
+  </ng-template>
 </div>
 
-<pre>{{createRequestForm.getRawValue() | json}}</pre>
+<!--<pre>{{createRequestForm.getRawValue() | json}}</pre>-->
