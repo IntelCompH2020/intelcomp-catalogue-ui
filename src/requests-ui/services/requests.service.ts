@@ -5,7 +5,7 @@ import {Ticket} from "../entities/ticket";
 
 @Injectable()
 export class RequestsService {
-  base = environment.API_ENDPOINT;
+  base = environment.REQUESTS_ENDPOINT;
 
   constructor(public http: HttpClient) {}
 

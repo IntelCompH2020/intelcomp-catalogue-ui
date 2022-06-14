@@ -36,16 +36,16 @@
       <li [routerLinkActive]="['current_section']" class="">
         <a [routerLink]="['requests', 'create']" class="uk-flex uk-flex-middle">
           <span class="material-icons uk-margin-right">description</span>
-          <span class="menu_title">Create Request</span>
+          <span class="menu_title">Request Dataset</span>
         </a>
       </li>
     </ul>
 
-    <ul *ngIf="userInfo?.roles && hasRole('OPERATOR_DATASET-INGESTOR')">
+    <ul *ngIf="userInfo?.roles && (hasRole('OPERATOR_DATASET-INGESTOR') || hasRole('OPERATOR_DATASET-OWNER'))">
       <li [routerLinkActive]="['current_section']" class="">
         <a [routerLink]="['requests', 'all']" class="uk-flex uk-flex-middle">
           <span class="material-icons uk-margin-right">description</span>
-          <span class="menu_title">Create Request</span>
+          <span class="menu_title">Dataset Requests</span>
         </a>
       </li>
     </ul>
