@@ -3,6 +3,7 @@ import {FormBuilder} from "@angular/forms";
 import {Ticket} from "../../entities/ticket";
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {RequestsService} from "../../services/requests.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-request',
@@ -16,7 +17,7 @@ export class CreateRequestComponent {
   createRequestForm = this.fb.group(new Ticket());
   user = {email: 'testUser@test.ts'}
 
-  constructor(private fb: FormBuilder, private requestService: RequestsService) {}
+  constructor(private fb: FormBuilder, private requestService: RequestsService, private router: Router) {}
 
   createRequest() {
     if (this.createRequestForm.valid) {
@@ -25,6 +26,7 @@ export class CreateRequestComponent {
       this.requestService.createRequest(this.createRequestForm.getRawValue()).subscribe(
         res => {console.log(res)},
         error => {console.log(error)},
+        () => {this.router.navigate(['/requests/all']).then();}
       );
     }
   }
