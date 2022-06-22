@@ -14,6 +14,7 @@ export class SideMenuDashboardComponent implements OnInit, OnDestroy {
   subscriptions = [];
   toggle: number[] = [];
   userInfo: UserInfo;
+  // roles = ['OPERATOR_DATA-PROCESSOR','OPERATOR_DATASET-INGESTOR','OPERATOR_DATASET-OWNER']
 
   constructor(private userService: UserService) {
   }
@@ -23,7 +24,7 @@ export class SideMenuDashboardComponent implements OnInit, OnDestroy {
       this.userService.getUserInfo().subscribe(
         res => {
           this.userInfo = res;
-          this.userService.userInfo = res;
+          this.userService.roleToSessionStorage(res);
           // console.log(this.userInfo);
         }, error => {
           console.log(error);

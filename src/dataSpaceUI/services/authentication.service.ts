@@ -2,16 +2,17 @@ import {Injectable} from "@angular/core";
 import {deleteCookie, getCookie} from "../catalogue-ui/shared/reusable-components/cookie-management";
 import {environment} from "../../environments/environment";
 import {Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
+import {UserService} from "./user.service";
 
 
 @Injectable()
 export class AuthenticationService {
 
   base = environment.API_ENDPOINT;
+  loginEndPoint = environment.API_LOGIN;
   cookieName = 'AccessToken';
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router, private userService: UserService) {
   }
 
   tryLogin() {
@@ -25,13 +26,18 @@ export class AuthenticationService {
   }
 
   login() {
-    window.location.href = this.base + '/oauth2/authorization/cite';
+    window.location.href = this.base + this.loginEndPoint;
   }
 
   logout() {
     sessionStorage.clear();
     deleteCookie(this.cookieName);
+    this.userService.cleanUserInfo();
     window.location.href = this.base + '/logout';
+  }
+
+  get userRoles(): string[] {
+    return sessionStorage.getItem('userRoles').split(',');
   }
 
   get authenticated(): boolean {
