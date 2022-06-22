@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Ticket, TicketComment} from "../../entities/ticket";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {From, Ticket} from "../../entities/ticket";
 import {RequestsService} from "../../services/requests.service";
 import {UserService} from "../../../dataSpaceUI/services/user.service";
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -10,6 +10,7 @@ import UIkit from "uikit";
 @Component({
   selector: 'app-create-request',
   templateUrl: 'create.request.component.html',
+  styleUrls: ['create.request.component.scss'],
   providers: [RequestsService]
 })
 
@@ -27,6 +28,7 @@ export class CreateRequestComponent implements OnInit{
 
   ngOnInit() {
     this.createRequestForm = this.fb.group(new Ticket());
+    this.createRequestForm.setControl('assigner', this.fb.group(new From()));
     this.addValidators();
     if (this.route.snapshot.routeConfig.path.includes('edit')) {
       this.edit = true;
@@ -49,8 +51,11 @@ export class CreateRequestComponent implements OnInit{
   createRequest() {
     if (this.createRequestForm.valid) {
       this.createRequestForm.get('created').setValue(new Date());
+      this.createRequestForm.get('status').setValue('Submitted');
       if (this.userService.userInfo){
-        this.createRequestForm.get('assigner').setValue(this.userService.userInfo.email);
+        this.createRequestForm.get('assigner').get('email').setValue(this.userService.userInfo.email);
+        this.createRequestForm.get('assigner.firstname').setValue(this.userService.userInfo.name);
+        this.createRequestForm.get('assigner.lastname').setValue(this.userService.userInfo.surname);
         this.requestService.createRequest(this.createRequestForm.getRawValue()).subscribe(
           res => {this.router.navigate(['/requests/all']).then();},
           error => {console.log(error)},
@@ -72,7 +77,7 @@ export class CreateRequestComponent implements OnInit{
   editRequest() {
     if (this.createRequestForm.valid) {
       this.createRequestForm.get('updated').setValue(new Date());
-      this.requestService.editRequest(this.createRequestForm.getRawValue()).subscribe(
+      this.requestService.editRequest(this.requestId, this.createRequestForm.getRawValue()).subscribe(
         res => {this.router.navigate(['/requests/all']).then();},
         error => {console.log(error)},
         () => {}
@@ -91,10 +96,12 @@ export class CreateRequestComponent implements OnInit{
 
   addValidators() {
     this.createRequestForm.get('name').addValidators(Validators.required);
-    this.createRequestForm.get('assignee').addValidators(Validators.required);
     this.createRequestForm.get('description').addValidators(Validators.required);
-    this.createRequestForm.get('status').addValidators(Validators.required);
     this.createRequestForm.get('priority').addValidators(Validators.required);
+    if (this.edit) {
+      this.createRequestForm.get('status').addValidators(Validators.required);
+      this.createRequestForm.get('assignee').addValidators(Validators.required);
+    }
   }
 
 }
