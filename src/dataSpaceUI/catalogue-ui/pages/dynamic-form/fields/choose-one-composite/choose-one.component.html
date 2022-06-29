@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="{{fieldData.form.display?.cssClasses}}" [ngClass]="{'uk-hidden clear-style': (hideField || !fieldData.form.display.visible)}">
+<form [formGroup]="form" class="{{fieldData.form.display?.cssClasses}}" [ngClass]="{'uk-hidden clear-style': hideField}">
 <!--  {{fieldData.name | json}}-->
   <div *ngIf="fieldData.label?.text" class="uk-form-label uk-margin-bottom {{fieldData.label?.cssClasses}}"
        [attr.for]="fieldData.name" style="{{fieldData.label.style}}">
@@ -19,6 +19,16 @@
     </div>
   </ng-template>
 
+  <!-- Show radio so user can choose one-->
+  <div class="uk-margin-small-bottom">
+    <div *ngFor="let field of fieldData.subFields">
+      <label class="uk-form-label">
+        <input class="uk-radio uk-margin-small-right" type="radio" [name]="fieldData.name" (click)="chooseOne(field.name)">
+        {{field.label.text}}
+      </label>
+    </div>
+  </div>
+
   <div *ngIf="fieldData.typeInfo.multiplicity; else noMultiplicity">
     <div *ngFor="let control of fieldAsFormArray().controls; let i=index">
       <div [formGroupName]="i" class="uk-width-1-1 uk-display-inline-block" [ngClass]="{'uk-margin-bottom formGroupElement': fieldData.form.display?.hasBorder}">
@@ -31,13 +41,6 @@
                                    (handleBitSetsOfComposite)="handleCompositeBitsetOfChildren($event)">
               </app-composite-field>
             </div>
-            <div *ngIf="control.typeInfo.type === 'chooseOne'">
-              <app-choose-one [fieldData]="control" [subVocabularies]="subVocabularies"
-                             [vocabularies]="vocabularies" (hasChanges)="unsavedChangesPrompt()"
-                             [position]="i" (handleBitSets)="handleBitsetOfChildren($event)"
-                             (handleBitSetsOfComposite)="handleCompositeBitsetOfChildren($event)">
-              </app-choose-one>
-            </div>
             <div *ngIf="control.typeInfo.type === 'vocabulary' || control.typeInfo.type === 'select'" class="uk-form-controls uk-margin-medium-top">
               <app-vocabulary-field [fieldData]="control" [subVocabularies]="subVocabularies"
                                     [vocabularies]="vocabularies" (hasChanges)="unsavedChangesPrompt()"
@@ -49,7 +52,7 @@
                       control.typeInfo.type === 'phone' || control.typeInfo.type === 'url' ||
                       control.typeInfo.type === 'double'">
               <app-string-url-email-field [fieldData]="control" [position]="i" (hasChanges)="unsavedChangesPrompt()"
-                                          (handleBitSets)="handleBitsetOfChildren($event)"
+                                          (handleBitSets)="handleBitsetOfChildren($event)" [form]="form"
                                           (handleBitSetsOfComposite)="handleCompositeBitsetOfChildren($event)">
               </app-string-url-email-field>
             </div>
@@ -107,13 +110,6 @@
                                  (handleBitSets)="handleBitsetOfChildren($event)" (hasChanges)="unsavedChangesPrompt()"
                                  (handleBitSetsOfComposite)="handleCompositeBitsetOfChildren($event)">
             </app-composite-field>
-          </div>
-
-          <div *ngIf="control.typeInfo.type === 'chooseOne'">
-            <app-choose-one [fieldData]="control" [subVocabularies]="subVocabularies" [vocabularies]="vocabularies"
-                           (handleBitSets)="handleBitsetOfChildren($event)" (hasChanges)="unsavedChangesPrompt()"
-                           (handleBitSetsOfComposite)="handleCompositeBitsetOfChildren($event)">
-            </app-choose-one>
           </div>
 
           <div *ngIf="control.typeInfo.type === 'vocabulary' || control.typeInfo.type === 'select'" class="uk-form-controls uk-margin-medium-top">
@@ -181,3 +177,4 @@
 
 </form>
 <!--<pre>{{fieldData | json}}</pre>-->
+<pre>{{form.getRawValue() | json}}</pre>
