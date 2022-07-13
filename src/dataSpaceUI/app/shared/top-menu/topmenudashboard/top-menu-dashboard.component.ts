@@ -3,7 +3,7 @@ import {UserService} from "../../../services/user.service";
 import {UserInfo} from "../../../domain/userInfo";
 import {AuthenticationService} from "../../../services/authentication.service";
 import {Subscriber} from "rxjs";
-import {environment} from "../../../../environments/environment";
+import {environment} from "../../../../../environments/environment";
 
 @Component({
   selector: 'app-top-menu-dashboard',

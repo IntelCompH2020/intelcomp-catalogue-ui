@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
-import {environment} from "../../environments/environment";
+import {environment} from "../../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {SurveyAnswer} from "../domain/survey";
 import {BrowseJob, Job} from "../domain/job";
-import {Paging} from "../catalogue-ui/domain/paging";
+import {Paging} from "../../catalogue-ui/domain/paging";
 
 @Injectable()
 export class CatalogueService {

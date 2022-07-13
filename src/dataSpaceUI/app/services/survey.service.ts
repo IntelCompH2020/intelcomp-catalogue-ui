@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
-import {environment} from "../../environments/environment";
+import {environment} from "../../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {ResourcePermission, Survey, SurveyAnswer, SurveyInfo} from "../domain/survey";
-import {Paging} from "../catalogue-ui/domain/paging";
-import {URLParameter} from "../catalogue-ui/domain/url-parameter";
+import {Paging} from "../../catalogue-ui/domain/paging";
+import {URLParameter} from "../../catalogue-ui/domain/url-parameter";
 
 @Injectable()
 export class SurveyService {

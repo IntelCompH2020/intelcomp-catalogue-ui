@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
-import {SearchComponent} from "../../catalogue-ui/pages/search/search.component";
-import {SearchService} from "../../catalogue-ui/services/search.service";
+import {SearchComponent} from "../../../catalogue-ui/pages/search/search.component";
+import {SearchService} from "../../../catalogue-ui/services/search.service";
 
 @Component({
   selector: 'pages-intelcomp-search',

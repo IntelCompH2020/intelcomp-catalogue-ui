@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
-import {LandingPageService} from "../../../catalogue-ui/services/landing-page.service";
-import {LandingPageComponent} from "../../../catalogue-ui/pages/landingpages/dataset/landing-page.component";
-import {environment} from "../../../../environments/environment";
+import {LandingPageService} from "../../../../catalogue-ui/services/landing-page.service";
+import {LandingPageComponent} from "../../../../catalogue-ui/pages/landingpages/dataset/landing-page.component";
+import {environment} from "../../../../../environments/environment";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NavigationService} from "../../../services/navigation.service";
 import {UserService} from "../../../services/user.service";

@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
-import {deleteCookie, getCookie} from "../catalogue-ui/shared/reusable-components/cookie-management";
-import {environment} from "../../environments/environment";
+import {deleteCookie, getCookie} from "../../catalogue-ui/shared/reusable-components/cookie-management";
+import {environment} from "../../../environments/environment";
 import {Router} from "@angular/router";
 import {UserService} from "./user.service";
 

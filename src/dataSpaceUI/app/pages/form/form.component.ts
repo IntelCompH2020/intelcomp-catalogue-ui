@@ -3,8 +3,8 @@ import {ActivatedRoute} from "@angular/router";
 import {CatalogueService} from "../../services/catalogue.service";
 import {Survey, SurveyAnswer} from "../../domain/survey";
 import {Subscriber} from "rxjs";
-import {FormControlService} from "../../catalogue-ui/services/form-control.service";
-import {Model} from "../../catalogue-ui/domain/dynamic-form-model";
+import {FormControlService} from "../../../catalogue-ui/services/form-control.service";
+import {Model} from "../../../catalogue-ui/domain/dynamic-form-model";
 
 
 @Component({
