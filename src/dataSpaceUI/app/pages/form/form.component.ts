@@ -17,7 +17,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   subscriptions = [];
   tabsHeader: string = null;
-  survey: Survey = null;
+  survey: Model = null;
   surveyAnswers: SurveyAnswer = null
   datasetType: string;
   model: Model = null;
