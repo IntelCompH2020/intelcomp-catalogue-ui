@@ -1,0 +1,35 @@
+<div class="uk-section uk-section-primary uk-preserve-color">
+  <div class="uk-container uk-container-large">
+    <div *ngIf="payload?.identifier" class="uk-margin-top uk-scrollspy-inview uk-animation-fade service-users" uk-scrollspy-class="">
+      <span class="field-label">Identifier: {{payload['identifier']['value'] + ' (' + payload['identifier']['identifierType'] + ')'}}</span>
+    </div>
+
+    <div *ngIf="payload?.publicationYear" class="uk-margin-top uk-scrollspy-inview uk-animation-fade service-users" uk-scrollspy-class="">
+      <span class="field-label">Publication year: {{payload.publicationYear}}</span>
+    </div>
+
+    <div *ngIf="payload?.creators?.length > 0" class="uk-margin-top uk-scrollspy-inview uk-animation-fade service-users" uk-scrollspy-class="">
+      <h6 class="field-label">Creators</h6>
+      <div class="uk-flex">
+        <ul>
+          <li *ngFor="let creator of payload.creators">
+            <span>{{creator.creatorName.value}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div *ngIf="payload?.descriptions?.length > 0" class="uk-margin-top uk-scrollspy-inview uk-animation-fade service-users" uk-scrollspy-class="">
+      <h6 class="field-label">Descriptions</h6>
+      <div class="uk-flex">
+        <ul>
+          <li *ngFor="let description of payload.descriptions">
+            <span>{{description.content}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <pre>{{payload | json}}</pre>
+  </div>
+</div>

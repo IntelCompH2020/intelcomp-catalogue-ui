@@ -91,6 +91,17 @@
             <a uk-toggle="target: #modal-dataset-instances">More details...</a>
           </div>
 
+          <div *ngIf="tools?.results?.length > 0" class="uk-card uk-card-default uk-card-body uk-margin-top">
+            <h6 class="field-label">Tools</h6>
+            <div class="uk-flex">
+              <ul>
+                <li *ngFor="let tool of tools.results">
+                  <a [routerLink]="['/landingPage/tool/',tool.identifier.value]"><span>{{tool['titles'][0]['value']}}</span></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
           <div *ngIf="dataset['metadata']['contact']" class="uk-card uk-card-default uk-card-body uk-margin-top">
             <h6 class="field-label">Contact</h6>
             <div class="uk-flex">
