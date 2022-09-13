@@ -11,6 +11,7 @@ import {ResourcePayloadService} from "../../../services/resource-payload.service
 export class PayloadComponent implements OnInit{
 
   payload = null;
+  resourceType: string = null;
 
   constructor(private route: ActivatedRoute, private resourcePayloadService: ResourcePayloadService) {
   }
@@ -18,6 +19,7 @@ export class PayloadComponent implements OnInit{
   ngOnInit() {
     this.route.params.subscribe(params => {
       console.log(params);
+      this.resourceType = params['resourceType'];
       this.resourcePayloadService.getItem(params['resourceType'], params['identifierValue']).subscribe(
         next => {
           console.log(next);
