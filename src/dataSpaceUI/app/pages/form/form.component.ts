@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {CatalogueService} from "../../services/catalogue.service";
 import {Survey, SurveyAnswer} from "../../domain/survey";
-import {Subscriber} from "rxjs";
+import {Subscriber, zip} from "rxjs";
 import {FormControlService} from "../../../catalogue-ui/services/form-control.service";
 import {Model} from "../../../catalogue-ui/domain/dynamic-form-model";
 
@@ -17,10 +17,11 @@ export class FormComponent implements OnInit, OnDestroy {
 
   subscriptions = [];
   tabsHeader: string = null;
-  survey: Model = null;
   surveyAnswers: SurveyAnswer = null
+  vocabulariesMap: Map<string, object[]> = null
   datasetType: string;
   model: Model = null;
+  ready = false;
 
   constructor(private activatedRoute: ActivatedRoute,
               private catalogueService: CatalogueService,
@@ -28,15 +29,20 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.datasetType = this.activatedRoute.snapshot.params['resourceTypeModel'];
-    // this.subscriptions.push(
-    //   this.formService.getFormModelByType(this.datasetType).subscribe(
-    //     res => {
-    //       this.model = res.results[0];
-    //     },
-    //     error => {console.log(error)}
-    //   )
-    // );
+    this.ready = false;
+    this.datasetType = this.activatedRoute.snapshot.params['resourceTypeModel'];
+    this.subscriptions.push(
+      zip(
+        this.formService.getFormModelByType(this.datasetType),
+        this.formService.getUiVocabularies()).subscribe(
+        res => {
+          this.model = res[0].results[0];
+          this.vocabulariesMap = res[1]
+        },
+        error => {console.log(error)},
+        () => {this.ready = true}
+      )
+    );
   }
 
   ngOnDestroy() {
