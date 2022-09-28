@@ -1,10 +1,12 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {CatalogueService} from "../../services/catalogue.service";
-import {Survey, SurveyAnswer} from "../../domain/survey";
 import {Subscriber, zip} from "rxjs";
+import {SurveyAnswer} from "../../domain/survey";
 import {FormControlService} from "../../../catalogue-ui/services/form-control.service";
 import {Model} from "../../../catalogue-ui/domain/dynamic-form-model";
+import {FormGroup} from "@angular/forms";
+import {SurveyComponent} from "../../../catalogue-ui/pages/dynamic-form/survey.component";
 
 
 @Component({
@@ -15,11 +17,13 @@ import {Model} from "../../../catalogue-ui/domain/dynamic-form-model";
 
 export class FormComponent implements OnInit, OnDestroy {
 
+  @ViewChild(SurveyComponent) child: SurveyComponent;
+
   subscriptions = [];
   tabsHeader: string = null;
   surveyAnswers: SurveyAnswer = null
   vocabulariesMap: Map<string, object[]> = null
-  datasetType: string;
+  resourceType: string;
   model: Model = null;
   ready = false;
 
@@ -30,19 +34,30 @@ export class FormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.ready = false;
-    this.datasetType = this.activatedRoute.snapshot.params['resourceTypeModel'];
+    // this.resourceType = this.activatedRoute.snapshot.params['resourceTypeModel'];
     this.subscriptions.push(
-      zip(
-        this.formService.getFormModelByType(this.datasetType),
-        this.formService.getUiVocabularies()).subscribe(
-        res => {
-          this.model = res[0].results[0];
-          this.vocabulariesMap = res[1]
-        },
-        error => {console.log(error)},
-        () => {this.ready = true}
+      this.activatedRoute.params.subscribe(
+        params => {
+          this.resourceType = params['resourceTypeModel'];
+          this.subscriptions.push(
+            zip(
+              this.formService.getFormModelByType(this.resourceType),
+              this.formService.getUiVocabularies()).subscribe(
+              res => {
+                this.model = res[0].results[0];
+                this.vocabulariesMap = res[1]
+              },
+              error => {console.log(error)},
+              () => {this.ready = true}
+            )
+          );
+        }
       )
     );
+  }
+
+  submitForm(form: FormGroup) {
+    this.child.onSubmit();
   }
 
   ngOnDestroy() {
