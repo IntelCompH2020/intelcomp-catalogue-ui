@@ -60,7 +60,7 @@
   </div>
 
   <div *ngIf="userInfo?.roles && hasRole('OPERATOR_DEVELOPER')" class="menu_section border_top">
-    <h6 class="uk-flex uk-flex-center">Developer</h6>
+    <h6 class="uk-flex uk-flex-center">Tools</h6>
     <ul>
       <li [routerLinkActive]="['current_section']" class="">
         <a [routerLink]="['/form/tool']" class="uk-flex uk-flex-middle">
@@ -68,6 +68,11 @@
           <span class="menu_title">Register tool</span>
         </a>
       </li>
+    </ul>
+  </div>
+  <div *ngIf="userInfo?.roles && hasRole('OPERATOR_DEVELOPER')" class="menu_section border_top">
+    <h6 class="uk-flex uk-flex-center">Models</h6>
+    <ul>
       <li [routerLinkActive]="['current_section']" class="">
         <a [routerLink]="['/form/model']" class="uk-flex uk-flex-middle">
           <span class="material-icons uk-margin-right">description</span>
