@@ -21,10 +21,13 @@ export class FormComponent implements OnInit, OnDestroy {
 
   subscriptions = [];
   tabsHeader: string = null;
+  mandatoryFieldsText: string = 'Fields with (*) are mandatory.';
+  // mandatoryFieldsText: string = 'Fields with (*) are mandatory and must be completed in order for the survey to be validated.';
   surveyAnswers: SurveyAnswer = null
   vocabulariesMap: Map<string, object[]> = null
   resourceType: string;
   model: Model = null;
+  downloadPDF: boolean = false;
   ready = false;
 
   constructor(private activatedRoute: ActivatedRoute,
