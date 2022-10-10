@@ -12,7 +12,6 @@ import {UserInfo} from "../../../domain/userInfo";
 
 export class TopMenuLandingComponent implements OnInit {
 
-  showLogin = true;
   subscriptions = [];
   userInfo: UserInfo = null;
   projectName = environment.projectName;
@@ -36,7 +35,7 @@ export class TopMenuLandingComponent implements OnInit {
 
   parseUsername() {
     let firstLetters = "";
-    let matches = this.userInfo.fullname.match(/\b(\w)/g);
+    let matches = this.userInfo.fullname?.match(/\b(\w)/g);
     if(matches)
       firstLetters += matches.join('');
     return firstLetters;

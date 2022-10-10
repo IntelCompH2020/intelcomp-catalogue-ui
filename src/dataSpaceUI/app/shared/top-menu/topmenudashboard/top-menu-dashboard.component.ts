@@ -44,7 +44,7 @@ export class TopMenuDashboardComponent implements OnInit, OnDestroy {
 
   parseUsername() {
     let firstLetters = "";
-    let matches = this.userInfo.fullname.match(/\b(\w)/g);
+    let matches = this.userInfo.fullname?.match(/\b(\w)/g);
     if(matches)
       firstLetters += matches.join('');
     return firstLetters;
