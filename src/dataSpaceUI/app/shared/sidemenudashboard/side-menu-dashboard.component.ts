@@ -42,6 +42,7 @@ export class SideMenuDashboardComponent implements OnInit, OnDestroy {
   }
 
   hasRole(role: string) {
+    console.log(this.userInfo.roles.indexOf(role) > -1);
     return this.userInfo.roles.indexOf(role) > -1;
     // return this.roles.indexOf(role) > -1;
   }
