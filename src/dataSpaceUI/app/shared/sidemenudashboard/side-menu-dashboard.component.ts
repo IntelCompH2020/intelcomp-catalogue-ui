@@ -28,6 +28,7 @@ export class SideMenuDashboardComponent implements OnInit, OnDestroy {
           // console.log(this.userInfo);
         }, error => {
           console.log(error);
+          this.userService.clearUserInfo()
         }
       )
     );

@@ -28,6 +28,7 @@ export class TopMenuLandingComponent implements OnInit {
           // console.log(this.userInfo);
         }, error => {
           console.log(error);
+          this.userService.clearUserInfo();
         }
       )
     );
