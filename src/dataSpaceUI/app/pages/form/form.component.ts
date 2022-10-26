@@ -61,6 +61,10 @@ export class FormComponent implements OnInit, OnDestroy {
 
   submitForm(form: FormGroup) {
     this.child.onSubmit();
+    if (form.valid) {
+    } else {
+      form.markAllAsTouched();
+    }
   }
 
   ngOnDestroy() {
