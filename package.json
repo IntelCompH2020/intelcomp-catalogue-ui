@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build",
+    "build": "ng build --output-hashing=all",
     "build:prod": "ng build --configuration=production --output-hashing=all",
     "build:beta": "ng build --configuration beta",
     "watch": "ng build --watch --configuration development",
