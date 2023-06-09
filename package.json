@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json",
+    "start": "ng serve --proxy-config proxy.conf.json --port 4200",
     "build": "ng build --output-hashing=all",
     "build:prod": "ng build --configuration=production --output-hashing=all",
     "build:beta": "ng build --configuration beta",
@@ -26,6 +26,7 @@
     "bitset": "^5.1.1",
     "ng2-date-picker": "^13.1.1",
     "pdfmake": "^0.2.5",
+    "seedrandom": "^3.0.5",
     "node-sass": "^7.0.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
