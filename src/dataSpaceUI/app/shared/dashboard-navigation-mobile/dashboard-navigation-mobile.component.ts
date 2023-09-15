@@ -4,12 +4,12 @@ import {UserInfo} from "../../domain/userInfo";
 import {Subscriber} from "rxjs";
 
 @Component({
-  selector: 'app-side-menu-dashboard',
-  templateUrl: 'side-menu-dashboard.component.html',
-  styleUrls: ['./side-menu-dashboard.component.css']
+  selector: 'app-dashboard-navigation-mobile',
+  templateUrl: 'dashboard-navigation-mobile.component.html',
+  styleUrls: ['./dashboard-navigation-mobile.component.css']
 })
 
-export class SideMenuDashboardComponent implements OnInit, OnDestroy {
+export class DashboardNavigationMobileComponent implements OnInit, OnDestroy {
 
   subscriptions = [];
   toggle: number[] = [];
@@ -48,20 +48,4 @@ export class SideMenuDashboardComponent implements OnInit, OnDestroy {
     return this.userInfo.roles.indexOf(role) > -1;
     // return this.roles.indexOf(role) > -1;
   }
-
-  toggleSidebar() {
-    const el: HTMLElement = document.getElementById('sidebar_toggle');
-    if(!el.classList.contains('closed')) {
-      el.classList.add('closed');
-      const el1: HTMLElement = document.getElementById('sidebar_main_content');
-      el1.classList.remove('sidebar_main_active');
-      el1.classList.add('sidebar_main_inactive');
-    } else {
-      el.classList.remove('closed');
-      const el1: HTMLElement = document.getElementById('sidebar_main_content');
-      el1.classList.add('sidebar_main_active');
-      el1.classList.remove('sidebar_main_inactive');
-    }
-  }
-
 }
