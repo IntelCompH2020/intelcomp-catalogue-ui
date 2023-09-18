@@ -22,13 +22,15 @@ export class FormComponent implements OnInit, OnDestroy {
   subscriptions = [];
   tabsHeader: string = null;
   mandatoryFieldsText: string = 'Fields with (*) are mandatory.';
-  surveyAnswers: SurveyAnswer = null
+  payload: any = null
   vocabulariesMap: Map<string, object[]> = null
   resourceType: string;
   model: Model = null;
   subType: string = null;
   downloadPDF: boolean = false;
   ready = false;
+  successMessage = null;
+  errorMessage = null;
 
   constructor(private activatedRoute: ActivatedRoute, private catalogueService: CatalogueService,
               private formService: FormControlService) {
@@ -59,9 +61,28 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   submitForm(value) {
-    this.child.onSubmit();
-    if (value[0].invalid)
+    // this.child.onSubmit();
+    // console.log(value);
+    if (value[0].invalid) {
       value[0].markAllAsTouched();
+    }
+    this.formService.postGenericItem(value[2], value[0].value, value[1]).subscribe(
+      res => {
+        if (value[1])
+          this.successMessage = 'Updated successfully!';
+        else
+          this.successMessage = 'Created successfully!';
+        this.payload = res;
+      },
+      error => {
+        this.errorMessage = 'Something went bad, server responded: ' + JSON.stringify(error?.error?.message);
+      },
+      () => {
+        this.child.closeSuccessAlert();
+        // this.showLoader = false;
+      }
+    );
+
   }
 
   ngOnDestroy() {
