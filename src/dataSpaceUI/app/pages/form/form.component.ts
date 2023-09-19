@@ -7,12 +7,13 @@ import {FormControlService} from "../../../catalogue-ui/services/form-control.se
 import {Model} from "../../../catalogue-ui/domain/dynamic-form-model";
 import {FormGroup} from "@angular/forms";
 import {SurveyComponent} from "../../../catalogue-ui/pages/dynamic-form/survey.component";
+import {ResourcePayloadService} from "../../services/resource-payload.service";
 
 
 @Component({
   selector: 'pages-form',
   templateUrl: 'form.component.html',
-  providers: [FormControlService]
+  providers: [FormControlService, ResourcePayloadService]
 })
 
 export class FormComponent implements OnInit, OnDestroy {
@@ -22,9 +23,10 @@ export class FormComponent implements OnInit, OnDestroy {
   subscriptions = [];
   tabsHeader: string = null;
   mandatoryFieldsText: string = 'Fields with (*) are mandatory.';
-  payload: any = null
+  payload: {answer: object} = null
   vocabulariesMap: Map<string, object[]> = null
   resourceType: string;
+  resourceId: string;
   model: Model = null;
   subType: string = null;
   downloadPDF: boolean = false;
@@ -33,7 +35,7 @@ export class FormComponent implements OnInit, OnDestroy {
   errorMessage = null;
 
   constructor(private activatedRoute: ActivatedRoute, private catalogueService: CatalogueService,
-              private formService: FormControlService) {
+              private formService: FormControlService, private payloadService: ResourcePayloadService) {
   }
 
   ngOnInit() {
@@ -43,6 +45,17 @@ export class FormComponent implements OnInit, OnDestroy {
       this.activatedRoute.params.subscribe(
         params => {
           this.resourceType = params['resourceTypeModel'];
+          if (params['id']){
+            this.resourceId = params['id'];
+            this.subscriptions.push(
+              this.payloadService.getItemById(this.resourceType, this.resourceId).subscribe(
+                res=>{
+                  this.payload = {answer: {'Intelcomp tool' : null}};
+                  this.payload.answer['Intelcomp tool'] = res;
+                }
+              )
+            );
+          }
           this.subscriptions.push(
             zip(
               this.formService.getFormModelByResourceType(this.resourceType),
@@ -66,22 +79,39 @@ export class FormComponent implements OnInit, OnDestroy {
     if (value[0].invalid) {
       value[0].markAllAsTouched();
     }
-    this.formService.postGenericItem(value[2], value[0].value, value[1]).subscribe(
-      res => {
-        if (value[1])
+    if (value[1]) {
+      if (!value[0].value[Object.keys(value[0].value)[0]].id) // this is bad, will totally regret it...
+        value[0].value[Object.keys(value[0].value)[0]].id = this.resourceId;
+      // console.log(value[0].value[Object.keys(value[0].value)[0]]);
+      this.formService.putGenericItem(this.resourceId, this.resourceType, value[0].value).subscribe(
+        res => {
           this.successMessage = 'Updated successfully!';
-        else
+          this.payload.answer['Intelcomp tool'] = res;
+        },
+        error => {
+          this.errorMessage = 'Something went bad, server responded: ' + JSON.stringify(error?.error?.message);
+        },
+        () => {
+          this.child.closeSuccessAlert();
+          // this.showLoader = false;
+        }
+      );
+    } else {
+      this.formService.postGenericItem(value[2], value[0].value).subscribe(
+        res => {
           this.successMessage = 'Created successfully!';
-        this.payload = res;
-      },
-      error => {
-        this.errorMessage = 'Something went bad, server responded: ' + JSON.stringify(error?.error?.message);
-      },
-      () => {
-        this.child.closeSuccessAlert();
-        // this.showLoader = false;
-      }
-    );
+          this.payload = {answer: {'Intelcomp tool' : null}};
+          this.payload.answer['Intelcomp tool'] = res;
+        },
+        error => {
+          this.errorMessage = 'Something went bad, server responded: ' + JSON.stringify(error?.error?.message);
+        },
+        () => {
+          this.child.closeSuccessAlert();
+          // this.showLoader = false;
+        }
+      );
+    }
 
   }
 
