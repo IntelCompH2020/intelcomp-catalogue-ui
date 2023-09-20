@@ -45,7 +45,7 @@ export class PayloadComponent implements OnInit{
           }
         }
       );
-    })
+    });
   }
 
   deleteItem() {
@@ -56,8 +56,12 @@ export class PayloadComponent implements OnInit{
       },
       error => {
         // UIkit.modal('#delete-modal').hide();
-        console.error(error)
+        console.error(error);
       }
     );
+  }
+
+  hasRole() {
+    return this.authService.userRoles.includes('OPERATOR_DEVELOPER');
   }
 }

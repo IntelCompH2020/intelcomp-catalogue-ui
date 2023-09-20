@@ -82,6 +82,11 @@
                               {{result.titles[0]?.value}}
                             </h5>
                           </div>
+                          <div *ngFor="let description of result?.descriptions">
+                            <span *ngIf="description.descriptionType === 'ABSTRACT'" class="field-label">
+                              Abstract: {{description.content}}
+                            </span>
+                          </div>
                           <div *ngIf="result?.resourceType?.value" class="uk-margin-small-top uk-scrollspy-inview uk-animation-fade service-users" uk-scrollspy-class="">
                             <span class="field-label">Type: {{result?.resourceType?.value}}</span>
                           </div>

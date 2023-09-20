@@ -1,11 +1,9 @@
 import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CatalogueService} from "../../services/catalogue.service";
 import {Subscriber, zip} from "rxjs";
-import {SurveyAnswer} from "../../domain/survey";
 import {FormControlService} from "../../../catalogue-ui/services/form-control.service";
 import {Model} from "../../../catalogue-ui/domain/dynamic-form-model";
-import {FormGroup} from "@angular/forms";
 import {SurveyComponent} from "../../../catalogue-ui/pages/dynamic-form/survey.component";
 import {ResourcePayloadService} from "../../services/resource-payload.service";
 
@@ -35,7 +33,8 @@ export class FormComponent implements OnInit, OnDestroy {
   errorMessage = null;
 
   constructor(private activatedRoute: ActivatedRoute, private catalogueService: CatalogueService,
-              private formService: FormControlService, private payloadService: ResourcePayloadService) {
+              private formService: FormControlService, private payloadService: ResourcePayloadService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -45,32 +44,34 @@ export class FormComponent implements OnInit, OnDestroy {
       this.activatedRoute.params.subscribe(
         params => {
           this.resourceType = params['resourceTypeModel'];
-          if (params['id']){
+          if (params['id']) {
             this.resourceId = params['id'];
+            this.getResourceForEdit();
+          } else {
             this.subscriptions.push(
-              this.payloadService.getItemById(this.resourceType, this.resourceId).subscribe(
-                res=>{
-                  this.payload = {answer: {'Intelcomp tool' : null}};
-                  this.payload.answer['Intelcomp tool'] = res;
-                }
+              zip(
+                this.formService.getFormModelByResourceType(this.resourceType),
+                this.catalogueService.getUiVocabularies()).subscribe(
+                res => {
+                  this.model = res[0].results[0];
+                  this.vocabulariesMap = res[1]
+                },
+                error => {console.log(error)},
+                () => {this.ready = true}
               )
             );
           }
-          this.subscriptions.push(
-            zip(
-              this.formService.getFormModelByResourceType(this.resourceType),
-              this.catalogueService.getUiVocabularies()).subscribe(
-              res => {
-                this.model = res[0].results[0];
-                this.vocabulariesMap = res[1]
-              },
-              error => {console.log(error)},
-              () => {this.ready = true}
-            )
-          );
         }
       )
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      if (subscription instanceof Subscriber) {
+        subscription.unsubscribe();
+      }
+    });
   }
 
   submitForm(value) {
@@ -80,9 +81,6 @@ export class FormComponent implements OnInit, OnDestroy {
       value[0].markAllAsTouched();
     }
     if (value[1]) {
-      if (!value[0].value[Object.keys(value[0].value)[0]].id) // this is bad, will totally regret it...
-        value[0].value[Object.keys(value[0].value)[0]].id = this.resourceId;
-      // console.log(value[0].value[Object.keys(value[0].value)[0]]);
       this.formService.putGenericItem(this.resourceId, this.resourceType, value[0].value).subscribe(
         res => {
           this.successMessage = 'Updated successfully!';
@@ -107,6 +105,7 @@ export class FormComponent implements OnInit, OnDestroy {
           this.errorMessage = 'Something went bad, server responded: ' + JSON.stringify(error?.error?.message);
         },
         () => {
+          this.router.navigate([`/form/${this.resourceType}/${this.payload.answer['Intelcomp tool'].id}`]);
           this.child.closeSuccessAlert();
           // this.showLoader = false;
         }
@@ -115,12 +114,23 @@ export class FormComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => {
-      if (subscription instanceof Subscriber) {
-        subscription.unsubscribe();
-      }
-    });
+  getResourceForEdit() {
+    this.subscriptions.push(
+      zip(
+        this.formService.getFormModelByResourceType(this.resourceType),
+        this.catalogueService.getUiVocabularies(),
+        this.payloadService.getItemById(this.resourceType, this.resourceId)).subscribe(
+        res => {
+          this.model = res[0].results[0];
+          this.vocabulariesMap = res[1];
+          // let name = this.model.name
+          this.payload = {answer: {}};
+          this.payload.answer[this.model.name] = res[2];
+        },
+        error => {console.log(error)},
+        () => {this.ready = true}
+      )
+    );
   }
 
 }
