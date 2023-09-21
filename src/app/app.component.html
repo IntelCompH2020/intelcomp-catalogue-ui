@@ -1,4 +1,4 @@
-<ng-container *ngIf="isHome() ; else dashboard">
+<ng-container *ngIf="isNotDashboard() ; else dashboard">
   <app-top-menu-landing></app-top-menu-landing>
   <router-outlet></router-outlet>
   <app-footer-intelcomp></app-footer-intelcomp>
