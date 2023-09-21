@@ -19,19 +19,25 @@ export class ResourcePayloadService {
 
   getItemsWithQueryParams(resourceType: string, queryParameters?: Params) {
     let params = new HttpParams();
-    if (Object.entries(queryParameters).length > 0) {
-      for (const [key, value] of Object.entries(queryParameters)) {
-        params = params.append(key, value);
-      }
-      return this.http.get<Paging<any>>(this.base + `/items?resourceType=${resourceType}&${params.toString()}`);
+    if (!queryParameters)
+      return this.http.get<Paging<any>>(this.base + `/items?resourceType=${resourceType}`);
+
+    for (const [key, value] of Object.entries(queryParameters)) {
+      params = params.append(key, value);
     }
-
-    return this.http.get<Paging<any>>(this.base + `/items?resourceType=${resourceType}`);
-
+    return this.http.get<Paging<any>>(this.base + `/items?resourceType=${resourceType}`, {params: params});
   }
 
   getItem(resourceType: string, identifierValue: string) {
-    return this.http.get(this.base + `/items/search?resourceType=${resourceType}&field=identifier&value=${identifierValue}`)
+    return this.http.get(this.base + `/items/search?resourceType=${resourceType}&field=identifier&value=${identifierValue}`);
+  }
+
+  getItemById(resourceType: string, id: string) {
+    return this.http.get(this.base + `/items/${id}?resourceType=${resourceType}`);
+  }
+
+  deleteItem(id: string, resourceType: string) {
+    return this.http.delete(this.base + `/items/${id}?resourceType=${resourceType}`);
   }
 
 }
