@@ -56,10 +56,15 @@ export class CreateRequestComponent implements OnInit{
         this.createRequestForm.get('assigner').get('email').setValue(this.userService.userInfo.email);
         this.createRequestForm.get('assigner.firstname').setValue(this.userService.userInfo.name);
         this.createRequestForm.get('assigner.lastname').setValue(this.userService.userInfo.surname);
-        this.requestService.createRequest(this.createRequestForm.getRawValue()).subscribe(
-          res => {this.router.navigate(['/requests/all']).then();},
-          error => {console.log(error)},
-          () => {}
+        this.userService.getUserToken().subscribe(
+          res => {
+            this.requestService.createRequest(this.createRequestForm.getRawValue(), res['tokenValue']).subscribe(
+              res => {this.router.navigate(['/requests/all']).then();},
+              error => {console.log(error)},
+              () => {}
+            );
+          },
+          error => {console.error(error)}
         );
       } else {
         UIkit.notification({
