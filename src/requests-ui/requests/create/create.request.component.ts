@@ -82,11 +82,17 @@ export class CreateRequestComponent implements OnInit{
   editRequest() {
     if (this.createRequestForm.valid) {
       this.createRequestForm.get('updated').setValue(new Date());
-      this.requestService.editRequest(this.requestId, this.createRequestForm.getRawValue()).subscribe(
-        res => {this.router.navigate(['/requests/all']).then();},
-        error => {console.log(error)},
-        () => {}
-      );
+      this.userService.getUserToken().subscribe(
+        res => {
+          this.requestService.editRequest(this.requestId, this.createRequestForm.getRawValue(), res['tokenValue']).subscribe(
+            res => {
+              this.router.navigate(['/requests/all']).then();
+            },
+            error => {
+              console.log(error)
+            }
+          );
+        });
     } else {
       this.createRequestForm.markAllAsTouched();
       UIkit.notification({

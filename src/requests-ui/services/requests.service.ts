@@ -34,8 +34,13 @@ export class RequestsService {
     return this.http.post<Ticket>(this.base + '/tickets', ticket, requestOptions);
   }
 
-  editRequest(requestId: string, ticket: Ticket) {
-    return this.http.put<Ticket>(this.base + `/tickets/${requestId}`, ticket);
+  editRequest(requestId: string, ticket: Ticket, token: string) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    let requestOptions = { headers: headers };
+    return this.http.put<Ticket>(this.base + `/tickets/${requestId}`, ticket, requestOptions);
   }
 
   postComment(ticketId: string, comment: TicketComment) {

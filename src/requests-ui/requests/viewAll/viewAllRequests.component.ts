@@ -25,7 +25,7 @@ export class ViewAllRequestsComponent implements OnInit {
   }
 
   assignToMe(requestId: string) {
-    console.log(requestId);
+    // console.log(requestId);
     if (this.userService.userInfo) {
       this.requestService.getRequestById(requestId).subscribe(
         res => {
@@ -33,15 +33,23 @@ export class ViewAllRequestsComponent implements OnInit {
           this.request.assignee = this.userService.userInfo.email;
           this.request.status = 'Assigned to ingestor';
           this.request.updated = new Date();
-          this.requestService.editRequest(requestId, this.request).subscribe(
-            res => {
-             this.getAllRequests();
-            },
-            error => {
-              this.message = 'Something went bad please contact the developing team';
-              this.showNotification();
+          // console.log(this.userService.userInfo);
+          // console.log(this.request);
+          this.userService.getUserToken().subscribe({
+            next: value => {
+              console.log(value['tokenValue']);
+              this.requestService.editRequest(requestId, this.request, value['tokenValue']).subscribe(
+                res => {
+                  this.getAllRequests();
+                },
+                error => {
+                  this.message = 'Something went bad please contact the developing team';
+                  this.showNotification();
+                }
+              );
             }
-          );
+          });
+
         },
         error => {
           this.message = 'Something went bad please contact the developing team';
