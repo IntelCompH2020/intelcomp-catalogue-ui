@@ -18,7 +18,8 @@ export class RequestComponent implements OnInit{
   request: Ticket = null;
   comment: FormGroup;
   ready = false;
-  user = {email: 'testUser@test.ts'}
+  canEdit = false;
+  // user = {email: 'testUser@test.ts'}
 
   constructor(private fb: FormBuilder, private requestService: RequestsService,
               private route: ActivatedRoute, private userService: UserService) {
@@ -38,6 +39,7 @@ export class RequestComponent implements OnInit{
         );
       }
     );
+    this.canEdit = this.userService.userInfo.roles.includes('OPERATOR_DATASET-OWNER');
   }
 
   addComment() {

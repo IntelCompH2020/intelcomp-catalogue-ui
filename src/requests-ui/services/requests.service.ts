@@ -2,18 +2,17 @@ import {Injectable} from "@angular/core";
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Ticket, TicketComment} from "../entities/ticket";
-import {getCookie} from "../../dataSpaceUI/catalogue-ui/shared/reusable-components/cookie-management";
 
 @Injectable()
 export class RequestsService {
   base = environment.REQUESTS_ENDPOINT;
-  auth_token = getCookie('AccessToken');
-
-  headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${this.auth_token}`
-  });
-  requestOptions = { headers: this.headers };
+  // auth_token = getCookie('AccessToken');
+  //
+  // headers = new HttpHeaders({
+  //   'Content-Type': 'application/json',
+  //   'Authorization': `Bearer ${this.auth_token}`
+  // });
+  // requestOptions = { headers: this.headers };
 
   constructor(public http: HttpClient) {}
 
@@ -25,12 +24,23 @@ export class RequestsService {
     return this.http.get<Ticket>(this.base + `/tickets/${requestId}`);
   }
 
-  createRequest(ticket: Ticket) {
-    return this.http.post<Ticket>(this.base + '/tickets', ticket, this.requestOptions);
+  createRequest(ticket: Ticket, token: string) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    let requestOptions = { headers: headers };
+
+    return this.http.post<Ticket>(this.base + '/tickets', ticket, requestOptions);
   }
 
-  editRequest(requestId: string, ticket: Ticket) {
-    return this.http.put<Ticket>(this.base + `/tickets/${requestId}`, ticket);
+  editRequest(requestId: string, ticket: Ticket, token: string) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    let requestOptions = { headers: headers };
+    return this.http.put<Ticket>(this.base + `/tickets/${requestId}`, ticket, requestOptions);
   }
 
   postComment(ticketId: string, comment: TicketComment) {
